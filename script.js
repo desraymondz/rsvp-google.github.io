@@ -2,6 +2,8 @@ function onFormSubmit(e) {
   try {
     var webhookUrl = "https://discord.com/api/webhooks/1266762256863985839/fv7VYqYGWEmaknGYtMDDSaneA2hbFYUI1HvBNJbh8FsJI6Ik06cHUQ5BnSlYstE3OSY8"; // Discord webhook URL
     var locationLink = "https://maps.app.goo.gl/udsDR5MxNq9NcEEW7"; // Spa location link
+    var bccEmail = "spavaliddev@gmail.com"; // Customer service email
+    var logoUrl = "https://drive.google.com/uc?export=view&id=1U0xXiveviIMK6p3hRKrKlYuiRgK0x1OW"; // Spa logo URL
     var response = e.values; // Get the form responses
 
     // Log the form response for debugging
@@ -11,10 +13,11 @@ function onFormSubmit(e) {
     var customerEmail = response[1];
     var customerName = response[2];
     var service = response[3]; 
-    var time = response[4]; // Time in local time zone (UTC +7)
-    var appointmentDate = response[5]; // Date in MM/DD format
-    var numOfPax = response[6];
-    var specialRequest = response[7];
+    var duration = parseInt(response[4].split(' ')[0]); // Extract duration in minutes
+    var time = response[5]; // Time in local time zone (UTC +7)
+    var appointmentDate = response[6]; // Date in MM/DD format
+    var numOfPax = response[7];
+    var specialRequest = response[8];
 
     // Parse the appointment date (MM/DD) and construct a Date object
     var [month, day] = appointmentDate.split('/');
@@ -27,7 +30,7 @@ function onFormSubmit(e) {
     parsedDate.setUTCMinutes(minutes);
 
     var startDateTime = new Date(parsedDate.getTime()); // Local time (UTC+7) as the start time
-    var endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000); // Assuming 1-hour duration
+    var endDateTime = new Date(startDateTime.getTime() + duration * 60 * 1000); // Calculate end time based on duration
 
     // Prepare the payload for the Discord notification
     var payload = {
@@ -37,6 +40,7 @@ function onFormSubmit(e) {
                  "Name: " + customerName + "\n" +
                  "Service: " + service + "\n" +
                  "Time (local): " + time + "\n" +
+                 "Duration: " + duration + " Minutes\n" + // Add duration
                  "Appointment Date: " + appointmentDate + "\n" +
                  "Number of Pax: " + numOfPax + "\n" +
                  "Special Request: " + specialRequest
@@ -58,11 +62,10 @@ function onFormSubmit(e) {
     // Generate Google Calendar link with explicit local time and details in description
     var startDateTimeLocal = startDateTime.toISOString().replace(/-|:|\.\d+Z$/g, "").replace('T', 'T') + 'Z';
     var endDateTimeLocal = endDateTime.toISOString().replace(/-|:|\.\d+Z$/g, "").replace('T', 'T') + 'Z';
-    var calendarDescription = `Service: ${service}%0AAppointment Date: ${appointmentDate}%0ATime: ${time} (Local Time)%0ANumber of Pax: ${numOfPax}%0ASpecial Request: ${specialRequest}`;
+    var calendarDescription = `Service: ${service}%0AAppointment Date: ${appointmentDate}%0ATime: ${time} (Local Time)%0ADuration: ${duration} Minutes%0ANumber of Pax: ${numOfPax}%0ASpecial Request: ${specialRequest}`;
     var calendarLink = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=Spa%20Appointment&dates=${startDateTimeLocal}/${endDateTimeLocal}&details=${calendarDescription}&location=${encodeURIComponent(locationLink)}&ctz=Asia/Bangkok`;
 
     // Prepare the email content in HTML format with CSS styling
-    var logoUrl = "https://drive.google.com/uc?export=view&id=1U0xXiveviIMK6p3hRKrKlYuiRgK0x1OW"; // Direct link to your logo
     var emailSubject = "Spa Reservation Confirmation";
     var emailBody = `
       <div style="font-family: Arial, sans-serif; color: #333; text-align: center;">
@@ -83,6 +86,10 @@ function onFormSubmit(e) {
             <td style="border: 1px solid #ddd; padding: 8px;">${time} (Local Time)</td>
           </tr>
           <tr>
+            <td style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;"><strong>Duration</strong></td>
+            <td style="border: 1px solid #ddd; padding: 8px;">${duration} Minutes</td>
+          </tr>
+          <tr>
             <td style="border: 1px solid #ddd; padding: 8px; background-color: #f2f2f2;"><strong>Number of Pax</strong></td>
             <td style="border: 1px solid #ddd; padding: 8px;">${numOfPax}</td>
           </tr>
@@ -101,7 +108,7 @@ function onFormSubmit(e) {
     // Send the confirmation email with a BCC to the customer service email
     MailApp.sendEmail({
       to: customerEmail,
-      bcc: 'spavaliddev@gmail.com', // Updated customer service email
+      bcc: bccEmail, // Customer service email
       subject: emailSubject,
       htmlBody: emailBody
     });

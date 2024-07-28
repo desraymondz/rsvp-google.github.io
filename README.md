@@ -14,10 +14,10 @@ This project integrates Google Forms with Google Sheets to create an RSVP system
    - Go to `Extensions` > `Apps Script`.
    - Paste the provided `script.js` code into the Apps Script editor.
    - Update the following variables in the script:
-     - `webhookUrl`: Replace `'YOUR_DISCORD_WEBHOOK_URL'` with your Discord webhook URL.
-     - `bccEmail`: Replace `'yourspaemail@example.com'` with your spa's customer service email.
-     - `locationLink`: Replace the value with your googlemap link.
-     - `logoUrl`: Replace `'yourlogoURL'` with the direct link to your spa's logo.
+     - `webhookUrl`
+     - `bccEmail`
+     - `locationLink`
+     - `logoUrl`
 
 3. **Install the Trigger:**
    - In the Apps Script editor, run the `installTrigger` function to set up the form submission trigger.
@@ -37,10 +37,8 @@ The `script.js` includes the following functionalities:
 ## Future Plans
 
 - **Enhancements:**
-  - Add options for different service durations (e.g., 60/90/120 minutes).
   - Implement a system to check employee availability.
   - Automatically send reminder emails 2 days prior to the appointment date.
-  - Enhance the email with a "Add to Google Calendar" feature.
 
 ## Known Issues
 

@@ -6,7 +6,7 @@ This project integrates Google Forms with Google Sheets to create an RSVP system
 ## Steps to Implement
 
 1. **Set Up the Google Form and Link to Google Sheets:**
-   - Create a Google Form with the necessary fields (e.g., customer name, email, service, appointment date, time, number of pax, special requests).
+   - Create a Google Form with the necessary fields (e.g., customer name, email, service, appointment date, time, number of pax, special requests). In this project, I will use this <a href="https://rsvpgoogle.pages.dev/" target="_blank">format</a>.
    - In Google Forms, navigate to the `Responses` tab and click on `Link to Sheets` to connect the form to a Google Sheet.
 
 2. **Configure the Google Sheet and Script:**

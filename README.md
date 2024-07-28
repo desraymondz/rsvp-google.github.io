@@ -1,20 +1,49 @@
-# rsvp-google
- RSVP system with Google Form and Google Sheet
+# RSVP System with Google Form and Google Sheets
 
-# Introduction
-Google form is embedded to a website where when the user inputs their details and submit it, Google form will record the responses in a google sheet and send a confirmation email to the user and business's customer service email.
+## Introduction
+This project integrates Google Forms with Google Sheets to create an RSVP system for a spa. When a user fills out the embedded Google Form on your website, their responses are recorded in a Google Sheet, and a confirmation email is sent to both the user and the spa's customer service email. Additionally, a notification is sent to a designated Discord channel.
 
-# Steps to Implement
-Paste code `script.js` to the google sheet's extensions called `Appscript`
-- Making Google Form, go to `Responses` and click `Link to Sheets`
-- In Google Sheets, navigate to `Extensions` on the top and choose `App Script`
-- Paste the `script.js` code in `App Script` and change the following:
-  - 'YOUR_DISCORD_WEBHOOK_URL'
-  - 'yourspaemail@example.com'
-  - 'yourlogoURL'
+## Steps to Implement
 
-# Future Plans
-- Add durations in the form (60/90/120 mins)
-- Check availability
-- Auto send reminder 2 days prior to the appointment date
-- Add to Google Calendar Feature in email
+1. **Set Up the Google Form and Link to Google Sheets:**
+   - Create a Google Form with the necessary fields (e.g., customer name, email, service, appointment date, time, number of pax, special requests).
+   - In Google Forms, navigate to the `Responses` tab and click on `Link to Sheets` to connect the form to a Google Sheet.
+
+2. **Configure the Google Sheet and Script:**
+   - Open the linked Google Sheet.
+   - Go to `Extensions` > `Apps Script`.
+   - Paste the provided `script.js` code into the Apps Script editor.
+   - Update the following variables in the script:
+     - `webhookUrl`: Replace `'YOUR_DISCORD_WEBHOOK_URL'` with your Discord webhook URL.
+     - `bccEmail`: Replace `'yourspaemail@example.com'` with your spa's customer service email.
+     - `locationLink`: Replace the value with your googlemap link.
+     - `logoUrl`: Replace `'yourlogoURL'` with the direct link to your spa's logo.
+
+3. **Install the Trigger:**
+   - In the Apps Script editor, run the `installTrigger` function to set up the form submission trigger.
+   - Authorize the script if prompted.
+
+## Script Details
+
+The `script.js` includes the following functionalities:
+
+- **Discord Notification:**
+  - Sends a notification to a Discord channel with the reservation details using a webhook.
+  
+- **Confirmation Email:**
+  - Sends a well-formatted HTML confirmation email to both the user and the spa's customer service email.
+  - Includes a link to the spa's location and an "Add to Google Calendar" link.
+
+## Future Plans
+
+- **Enhancements:**
+  - Add options for different service durations (e.g., 60/90/120 minutes).
+  - Implement a system to check employee availability.
+  - Automatically send reminder emails 2 days prior to the appointment date.
+  - Enhance the email with a "Add to Google Calendar" feature.
+
+## Known Issues
+
+- **Google Form Limitations:**
+  - The date input in Google Forms does not provide a calendar interface for selection.
+
